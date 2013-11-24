@@ -8,6 +8,9 @@
 
 #define KeyCount 7
 #define Frequency 3
+#define JPosT -0.8f
+#define JPosB -0.9f
+
 
 #include <GLFW/glfw3.h>
 #include <vector>
@@ -16,6 +19,7 @@
 #include <ctime>
 
 char gameKey[KeyCount] = {'S', 'D', 'F', ' ', 'J', 'K', 'L'};
+bool gKeyS[KeyCount] = {false};
 
 class Quad {
 public:
@@ -38,8 +42,17 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
         glfwSetWindowShouldClose(window, GL_TRUE);
     } else {
         for (int i = 0; i < KeyCount; i++) {
-            if (key == gameKey[i]) {
+            if (key == gameKey[i] && !gKeyS[i]) {
+                gKeyS[i] = true;
                 printf("Key Press: %c\n", key);
+            }
+        }
+    }
+    if (action == GLFW_RELEASE) {
+        for (int i = 0; i < KeyCount; i++) {
+            if (key == gameKey[i]) {
+                gKeyS[i] = false;
+                printf("Key Release: %c\n", key);
             }
         }
     }
@@ -60,8 +73,8 @@ const static float linePos[KeyCount] = {
     -0.285714,
     -0.142857,
     0,
-    0.142858,
-    0.285715,
+    0.142857,
+    0.285714,
     0.428572
 };
 
@@ -90,6 +103,9 @@ int main(void)
         line[i] = Quad(linePos[i] - 0.005f, -1.f, linePos[i] + 0.005f, 1.f);
     }
     
+    Quad JLineT(-0.428572f, JPosT - 0.005f, 0.428572f, JPosT + 0.005f);
+    Quad JLineB(-0.428572f, JPosB - 0.005f, 0.428572f, JPosB + 0.005f);
+    
     float time, lastTime;
     int count = 0, last = 0;
     lastTime = glfwGetTime();
@@ -109,12 +125,14 @@ int main(void)
         for (int i = 0; i < KeyCount; i++) {
             drawQuad(line[i]);
         }
+        drawQuad(JLineT);
+        drawQuad(JLineB);
         time = glfwGetTime();
         if ((int)(time * Frequency) - lastTime * Frequency > 0) {
             if (last != (int)(time * Frequency)) {
                 last = (int)(time * Frequency);
                 float pos = ((int)((float)rand() / RAND_MAX * KeyCount + KeyCount / 2 + 1) - KeyCount / 2 - 0.5f) * 1.f / KeyCount - 0.55f;
-                printf("%d. Position = %f\n", ++count, pos + 0.05f);
+//                printf("%d. Position = %f\n", ++count, pos + 0.05f);
                 notes.push_back(Quad(pos, 1.f, pos + 0.1f, 1.025f));
             }
         }
