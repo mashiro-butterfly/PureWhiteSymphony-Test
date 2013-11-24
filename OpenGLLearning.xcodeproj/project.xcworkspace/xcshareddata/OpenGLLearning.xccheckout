@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>9D1814F9-E0D8-4FE6-BE5D-7C158D5D690C</string>
+	<key>IDESourceControlProjectName</key>
+	<string>OpenGLLearning</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>FEA347B5-6331-4D7D-A6FB-E563CDFFF085</key>
+		<string>https://github.com/mashiro-butterfly/PureWhiteSymphony-Test.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>OpenGLLearning.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>FEA347B5-6331-4D7D-A6FB-E563CDFFF085</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/mashiro-butterfly/PureWhiteSymphony-Test.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>FEA347B5-6331-4D7D-A6FB-E563CDFFF085</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>FEA347B5-6331-4D7D-A6FB-E563CDFFF085</string>
+			<key>IDESourceControlWCCName</key>
+			<string>PureWhiteSymphony-Test</string>
+		</dict>
+	</array>
+</dict>
+</plist>
