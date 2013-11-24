@@ -56,13 +56,13 @@ void drawQuad(const Quad &quad) {
 
 // const static Quad playground(-0.5f, -1.f, 0.5f, 1.f);
 const static float linePos[KeyCount] = {
-    -0.500000,
-    0.071429,
-    -0.357143,
-    -0.214286,
-    -0.071429,
-    0.357143,
-    0.214286
+    -0.428572,
+    -0.285714,
+    -0.142857,
+    0,
+    0.142858,
+    0.285715,
+    0.428572
 };
 
 
@@ -113,7 +113,7 @@ int main(void)
         if ((int)(time * Frequency) - lastTime * Frequency > 0) {
             if (last != (int)(time * Frequency)) {
                 last = (int)(time * Frequency);
-                float pos = ((int)((float)rand() / RAND_MAX * KeyCount + KeyCount / 2 + 1) - KeyCount / 2 - 1) * 1.f / KeyCount - 0.55f;
+                float pos = ((int)((float)rand() / RAND_MAX * KeyCount + KeyCount / 2 + 1) - KeyCount / 2 - 0.5f) * 1.f / KeyCount - 0.55f;
                 printf("%d. Position = %f\n", ++count, pos + 0.05f);
                 notes.push_back(Quad(pos, 1.f, pos + 0.1f, 1.025f));
             }
