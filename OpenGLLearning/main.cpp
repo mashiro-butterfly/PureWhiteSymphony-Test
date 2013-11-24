@@ -7,9 +7,9 @@
 //
 
 #define KeyCount 7
-#define Frequency 3
-#define JPosT -0.8f
-#define JPosB -0.9f
+#define Frequency 10
+#define JPosT -0.6f
+#define JPosB -0.7f
 
 
 #include <GLFW/glfw3.h>
@@ -36,6 +36,17 @@ static void error_callback(int error, const char *description)
     fputs(description, stderr);
 }
 
+std::vector<Quad> notes;
+const static float linePos[KeyCount] = {
+    -0.428572,
+    -0.285714,
+    -0.142857,
+    0,
+    0.142857,
+    0.285714,
+    0.428572
+};
+
 static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
@@ -45,6 +56,18 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
             if (key == gameKey[i] && !gKeyS[i]) {
                 gKeyS[i] = true;
                 printf("Key Press: %c\n", key);
+                for (std::vector<Quad>::iterator p = notes.begin(); p != notes.end(); p++) {
+                    if (p -> up < JPosB) {
+                        continue;
+                    }
+                    if (p -> down > JPosT) {
+                        break;
+                    }
+                    if (p -> left < linePos[i] && linePos[i] < p -> right) {
+                        notes.erase(p);
+                        break;
+                    }
+                }
             }
         }
     }
@@ -68,22 +91,12 @@ void drawQuad(const Quad &quad) {
 }
 
 // const static Quad playground(-0.5f, -1.f, 0.5f, 1.f);
-const static float linePos[KeyCount] = {
-    -0.428572,
-    -0.285714,
-    -0.142857,
-    0,
-    0.142857,
-    0.285714,
-    0.428572
-};
 
 
 
 int main(void)
 {
     GLFWwindow *window;
-    std::vector<Quad> notes;
     srand((unsigned int)time(0));
     glfwSetErrorCallback(error_callback);
     if (!glfwInit())
