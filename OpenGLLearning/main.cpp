@@ -7,6 +7,7 @@
 //
 
 #define KeyCount 7
+#define Frequency 3
 
 #include <GLFW/glfw3.h>
 #include <vector>
@@ -38,7 +39,7 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
     } else {
         for (int i = 0; i < KeyCount; i++) {
             if (key == gameKey[i]) {
-                printf("%c", key);
+                printf("Key Press: %c\n", key);
             }
         }
     }
@@ -109,9 +110,9 @@ int main(void)
             drawQuad(line[i]);
         }
         time = glfwGetTime();
-        if ((int)time - lastTime > 0) {
-            if (last != (int)time) {
-                last = (int)time;
+        if ((int)(time * Frequency) - lastTime * Frequency > 0) {
+            if (last != (int)(time * Frequency)) {
+                last = (int)(time * Frequency);
                 float pos = ((int)((float)rand() / RAND_MAX * KeyCount + KeyCount / 2 + 1) - KeyCount / 2 - 1) * 1.f / KeyCount - 0.55f;
                 printf("%d. Position = %f\n", ++count, pos + 0.05f);
                 notes.push_back(Quad(pos, 1.f, pos + 0.1f, 1.025f));
