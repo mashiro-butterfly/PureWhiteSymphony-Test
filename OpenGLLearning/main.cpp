@@ -10,7 +10,7 @@
 #define Frequency 10
 #define JPosT -0.6f
 #define JPosB -0.7f
-
+#define Speed 1.0f
 
 #include <GLFW/glfw3.h>
 #include <vector>
@@ -151,8 +151,8 @@ int main(void)
         }
         for (std::vector<Quad>::iterator p = notes.begin(); p != notes.end(); p++) {
             // printf("%f", time - lastTime);
-            p -> down -= time - lastTime;
-            p -> up -= time - lastTime;
+            p -> down -= (time - lastTime) * Speed;
+            p -> up -= (time - lastTime) * Speed;
             drawQuad(*p);
             if (p -> up < -1.f) {
                 notes.erase(p);
