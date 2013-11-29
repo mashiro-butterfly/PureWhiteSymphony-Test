@@ -177,9 +177,11 @@
 				OTHER_LDFLAGS = (
 					"-lglfw",
 					"-lglew",
+					"-loglft",
+					"-lfreetype",
 				);
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = /usr/local/include;
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include/**";
 			};
 			name = Debug;
 		};
@@ -218,9 +220,11 @@
 				OTHER_LDFLAGS = (
 					"-lglfw",
 					"-lglew",
+					"-loglft",
+					"-lfreetype",
 				);
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = /usr/local/include;
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include/**";
 			};
 			name = Release;
 		};

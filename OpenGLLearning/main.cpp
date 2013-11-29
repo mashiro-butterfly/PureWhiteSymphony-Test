@@ -7,21 +7,27 @@
 //
 
 #define KeyCount 7
-#define Frequency 10
+#define Frequency 6
+
 #define JPosT -0.6f
 #define JPosB -0.8f
-#define Speed 2.0f
+#define Speed 1.0f
 
+#include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#define OGLFT_NO_SOLID
+#define OGLFT_NO_QT
+#include <oglft/OGLFT.h>
 #include <vector>
 #include <cstdlib>
 #include <cstdio>
 #include <ctime>
 
+int count;
+
 char gameKey[KeyCount] = {'S', 'D', 'F', ' ', 'J', 'K', 'L'};
 bool gKeyS[KeyCount] = {false};
-
 
 class Quad {
 public:
@@ -52,15 +58,22 @@ const static float linePos[KeyCount] = {
     0.428571f
 };
 
-static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
-{
+static void mouse_callback(GLFWwindow *window, int button, int action, int mods) {
+//    if (button == GLFW_MOUSE_BUTTON_LEFT) {
+//        printf("left\n");
+//    } else if (button == GLFW_MOUSE_BUTTON_RIGHT) {
+//        printf("right\n");
+//    }
+}
+
+static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
     } else {
         for (int i = 0; i < KeyCount; i++) {
             if (key == gameKey[i] && !gKeyS[i]) {
                 gKeyS[i] = true;
-                printf("Key Press: '%c'\n", key);
+                printf("Key Press: '%c'", key);
                 for (std::vector<Quad>::iterator p = notes.begin(); p != notes.end(); p++) {
                     if (p -> up < JPosB) {
                         continue;
@@ -69,11 +82,13 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
                         break;
                     }
                     if (p -> left < linePos[i] && linePos[i] < p -> right) {
-                        printf("Hit: '%c'\n", gameKey[i]);
+                        count++;
+                        printf("\tHit!");
                         notes.erase(p);
                         break;
                     }
                 }
+                printf("\n");
             }
         }
     }
@@ -96,9 +111,6 @@ void drawQuad(const Quad &quad) {
     } glEnd();
 }
 
-// const static Quad playground(-0.5f, -1.f, 0.5f, 1.f);
-
-
 
 int main(void)
 {
@@ -115,6 +127,7 @@ int main(void)
     }
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, key_callback);
+    glfwSetMouseButtonCallback(window, mouse_callback);
     glewInit();
     Quad line[KeyCount];
     
@@ -125,9 +138,18 @@ int main(void)
     Quad JLineT(-0.428572f, JPosT - 0.005f, 0.428572f, JPosT + 0.005f);
     Quad JLineB(-0.428572f, JPosB - 0.005f, 0.428572f, JPosB + 0.005f);
     
-    float time, lastTime;
+    double time, lastTime;
     int last = 0;
+    count = 0;
     lastTime = glfwGetTime();
+//    OGLFT::Monochrome *face = new OGLFT::Monochrome("/System/Library/Fonts/Avenir Next.ttc", 48);
+    OGLFT::Translucent *face = new OGLFT::Translucent("/System/Library/Fonts/Avenir Next.ttc", 48);
+    face -> setForegroundColor(0.f, 0.f, 0.f);
+    face -> setAdvance(true);
+    glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     while (!glfwWindowShouldClose(window))
     {
         float ratio;
@@ -137,14 +159,18 @@ int main(void)
         glViewport(0, 0, width, height);
         glClear(GL_COLOR_BUFFER_BIT);
         glClearColor(1.f, 1.f, 1.f, 1.f);
+//        glClearColor(0.5f, 0.5f, 0.5f, 1.f);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
         glMatrixMode(GL_MODELVIEW);
+        
         glLoadIdentity();
         for (int i = 0; i < KeyCount; i++) {
             drawQuad(line[i]);
         }
+        
+        
         drawQuad(JLineT);
         drawQuad(JLineB);
         time = glfwGetTime();
@@ -171,11 +197,22 @@ int main(void)
             }
             drawQuad(*p);
             if (p -> up < -1.f) {
+//                printf("Miss: '%c'\n", gameKey[(int)((p -> left + 0.55f) * KeyCount + 0.5f) - 1]);
+                count = 0;
                 notes.erase(p);
                 p--;
             }
         }
         lastTime = time;
+        
+        if (face) {
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+            char num[6];
+            sprintf(num, "%d", count);
+            OGLFT::BBox box = face -> OGLFT::Face::measure(num);
+            face -> draw(0.f - (box.x_max_ - box.x_min_) / 2.f, .4f, num);
+        }
+        
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
